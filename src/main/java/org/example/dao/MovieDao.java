@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.Optional;
+
 //CRUD - create read update delete
 //DAO - data access object
 
@@ -33,7 +35,19 @@ public class MovieDao {
         }
     }
 
-
+// read one
+    public Optional<Movie> getById(Long id) {
+        //optional jest tylko po to, aby coś zwrócić lub nie
+        //chroni on przed null pointer exception, ale nie całkowicie
+        //optional używamy, gdy spodziewamy się, że coś może być null
+        //optional rzczej nie jest szkodliwy, powinien być obsłużony
+        Session session = sessionFactory.openSession();
+        //ta metoda zawsze szuka po kluczu głównym tabeli
+        Movie movie = session.find(Movie.class, id);
+        session.close();
+        //poniższe zwróci Optional i w środku będzie Movie albo Null
+        return Optional.ofNullable(movie);
+    }
 
 
 

@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class App {
     public static void main(String[] args) {
@@ -48,6 +49,23 @@ public class App {
                 .lastName("Robertowski")
                 .address("Robotnicza 1")
                 .build());
+
+        //get movie by id - MovieDao.getById()
+        //poniższe na 100% działa
+        Optional<Movie> optionalMovie = movieDao.getById(1L);
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            System.out.println(movie);
+        }
+
+        Movie movie = movieDao.getById(99L)
+                        .orElse(new Movie("NIE ZNALEZIONO FILMU", LocalDate.MAX));
+
+        optionalMovie.ifPresent(movie2 -> {
+            System.out.println("NIE ZNALEZIONO →S☻Ć­éřć}♀÷cQf×╚Ç╣");
+            System.out.println(movie2);
+        });
+
 
         sessionFactory.close();
     }
