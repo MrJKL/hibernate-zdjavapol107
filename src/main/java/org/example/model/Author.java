@@ -1,9 +1,7 @@
 package org.example.model;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +12,9 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+//poniżej tworzymy prywatny constructor ze wszystkimi parametrami dla builder (takiego potrzebuje), ograniczamy dostęp ze względu na pole id
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

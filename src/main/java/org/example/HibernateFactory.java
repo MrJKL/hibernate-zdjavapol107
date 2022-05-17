@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateFactory {
 	private Configuration getHibernateConfig() {
+//		poniżej dane dla SessionFactory do utworzenia połączenia z bazą
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.connection.url", "jdbc:hsqldb:file:db-data/mydatabase; hsqldb.write_delay_millis=0");
 		configuration.setProperty("hibernate.connection.username", "admin123");
@@ -29,6 +30,7 @@ public class HibernateFactory {
 	}
 
 //	Poniższe się kopiuje do projektu np. z googla
+//	to implementacja i utworzenie SessionFactory
 	public SessionFactory getSessionFactory() {
 		StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
 											   .applySettings(getHibernateConfig().getProperties()).build();
