@@ -38,18 +38,28 @@ public class App {
         AuthorDao authorDao = new AuthorDao(sessionFactory);
         MovieDao movieDao = new MovieDao(sessionFactory);
 
-//        przykład zapisu nr 1
-        Author author = new Author("Marek", "Dudek", "Kowalna 34");
-        authorDao.save(author);
-//       przykład zapisu nr 2
-        authorDao.save(new Author("Derek", "Derkowski", "Derdkowo D3"));
-//       przykład zapisu nr 3
-        authorDao.save(Author.builder()
-                .firstName("Robert")
-                .lastName("Robertowski")
-                .address("Robotnicza 1")
-                .build());
+        saveAuthorExample(authorDao);
+        getByIdWithOptional(movieDao);
+//testujemy update z MovieDao
+        Optional<Movie> movieById = movieDao.getById(1L);
+        if(movieById.isPresent()) {
+            Movie movie = movieById.get();
+            System.out.println("Movie before update" + movie);
+            movie.setTitle("Updated movie");
+            movieDao.update(movie);
+        }
+        Optional<Movie> updatedMovieById = movieDao.getById(1L);
+        if (updatedMovieById.isPresent()) {
+            System.out.println("updatedMovieById = " + updatedMovieById);
+        }
+        updatedMovieById.ifPresent(movie -> System.out.println("updated movie: " + movie));
 
+
+
+        sessionFactory.close();
+    }
+
+    private static void getByIdWithOptional(MovieDao movieDao) {
         //get movie by id - MovieDao.getById()
         //poniższe na 100% działa
         Optional<Movie> optionalMovie = movieDao.getById(1L);
@@ -65,8 +75,21 @@ public class App {
             System.out.println("NIE ZNALEZIONO →S☻Ć­éřć}♀÷cQf×╚Ç╣");
             System.out.println(movie2);
         });
+    }
 
+    private static void saveAuthorExample(AuthorDao authorDao) {
+        //        przykład zapisu nr 1
+        Author author = new Author("Marek", "Dudek", "Kowalna 34");
+        authorDao.save(author);
 
-        sessionFactory.close();
+//       przykład zapisu nr 2
+        authorDao.save(new Author("Derek", "Derkowski", "Derdkowo D3"));
+
+//       przykład zapisu nr 3
+        authorDao.save(Author.builder()
+                .firstName("Robert")
+                .lastName("Robertowski")
+                .address("Robotnicza 1")
+                .build());
     }
 }

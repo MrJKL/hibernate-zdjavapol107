@@ -16,8 +16,8 @@ import java.util.Optional;
 public class MovieDao {
     private SessionFactory sessionFactory;
 
-//    create
-    public void  save(Movie movie) {
+    //    create
+    public void save(Movie movie) {
 //        ten try-catch to jest tu dla przykładu
         try {
             //wyciągamy sesję z session-factory
@@ -35,7 +35,7 @@ public class MovieDao {
         }
     }
 
-// read one
+    // read one
     public Optional<Movie> getById(Long id) {
         //optional jest tylko po to, aby coś zwrócić lub nie
         //chroni on przed null pointer exception, ale nie całkowicie
@@ -48,9 +48,14 @@ public class MovieDao {
         //poniższe zwróci Optional i w środku będzie Movie albo Null
         return Optional.ofNullable(movie);
     }
-
-
-
-
+    //update
+    public void update(Movie movie) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(movie);
+        transaction.commit();
+        session.close();
+    }
+    //read all
 
 }
