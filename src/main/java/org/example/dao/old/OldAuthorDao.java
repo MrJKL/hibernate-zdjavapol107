@@ -1,5 +1,7 @@
-package org.example.dao;
+package org.example.dao.old;
 
+
+import lombok.AllArgsConstructor;
 import org.example.model.Author;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,42 +9,31 @@ import org.hibernate.Transaction;
 
 import java.util.Optional;
 
-public abstract class EntityDao<T> {
-//    Nasze uniwersalne DAO z generycznymi metodami
-//    stworzone na podstawie author DAO
-//    zmieniliśmy EntityDao na abstrakcyjne, żeby nikt nie mógł utworzyć jego instancji, a jedynie tworzyć klasy dziedziczące
-//    ta klasa powinna implementować podstawowe działania na encjach, a bardziej wymagające specyficzne rzeczy będą obsługiwane przez specyficzne dla danego entity DAO np.: MovieDao
-
-
+@AllArgsConstructor
+public class OldAuthorDao {
     private SessionFactory sessionFactory;
-    //    poniższa zmienna przechowuje typ zmiennej, jaki przyjmie metoda
-    private Class<T> clazz;  // piszemy clazz, ponieważ class jest zarezerwowane przez java
 
-    public EntityDao(SessionFactory sessionFactory, Class<T> clazz) {
-        this.sessionFactory = sessionFactory;
-        this.clazz = clazz;
-    }
-
-    public Long save(T entity) {
+    // metoda save Hibernate zwraca obiekt Serializable i to jest id naszego rekordu (obiektu)
+    public Long save(Author author) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Long id = (Long) session.save(entity);
+        Long id = (Long) session.save(author);
         transaction.commit();
         session.close();
         return id;
     }
 
-    public Optional<T> getById(Long id) {
+    public Optional<Author> getById(Long id) {
         Session session = sessionFactory.openSession();
-        T entity = session.find(clazz, id);
+        Author author = session.find(Author.class, id);
         session.close();
-        return Optional.ofNullable(entity);
+        return Optional.ofNullable(author);
     }
 
-    public void update(T entity) {
+    public void update(Author author) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        session.update(entity);
+        session.update(author);
         transaction.commit();
         session.close();
     }
@@ -57,4 +48,5 @@ public abstract class EntityDao<T> {
         transaction.commit();
         session.close();
     }
+
 }
