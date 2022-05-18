@@ -17,6 +17,7 @@ public class MovieDao {
     private SessionFactory sessionFactory;
 
     //    create
+    // metoda save Hibernate zwraca obiekt Serializable i to jest id naszego rekordu (obiektu)
     public void save(Movie movie) {
 //        ten try-catch to jest tu dla przykładu
         try {
