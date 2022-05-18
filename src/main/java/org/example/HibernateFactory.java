@@ -1,8 +1,6 @@
 package org.example;
 
-import org.example.model.Author;
-import org.example.model.Movie;
-import org.example.model.Wheel;
+import org.example.model.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -23,8 +21,10 @@ public class HibernateFactory {
 //		Należy dodać utworzoną klasę (Entity)
 //		Dodane Entity posłużą do utworzenia nowych tabeli
 //		configuration.addAnnotatedClass(Wheel.class);
+		configuration.addAnnotatedClass(Badge.class);
 		configuration.addAnnotatedClass(Movie.class);
 		configuration.addAnnotatedClass(Author.class);
+		configuration.addAnnotatedClass(Actor.class);
 
 		return configuration;
 	}

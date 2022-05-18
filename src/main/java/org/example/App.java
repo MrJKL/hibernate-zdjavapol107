@@ -1,13 +1,18 @@
 package org.example;
 
+import org.example.dao.AuthorDao;
+import org.example.dao.BadgeDao;
+import org.example.dao.MovieDao;
 import org.example.dao.old.OldAuthorDao;
 import org.example.dao.old.OldMovieDao;
 import org.example.model.Author;
+import org.example.model.Badge;
 import org.example.model.Movie;
 import org.hibernate.SessionFactory;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -39,11 +44,41 @@ public class App {
         saveAuthorExample(oldAuthorDao);
         getByIdWithOptional(oldMovieDao);
         updateExample(oldMovieDao);
-
         deleteExample(oldAuthorDao);
+
+        MovieDao movieDao = new MovieDao(sessionFactory);
+        BadgeDao badgeDao = new BadgeDao(sessionFactory);
+        AuthorDao authorDao = new AuthorDao(sessionFactory);
+
+        oneToOneExample(movieDao, badgeDao);
+
+        Author author = new Author("Franek", "Franc", "Kielce");
+        Movie trojkat = new Movie("Trojkot", LocalDate.now());
+        Movie bermudy = new Movie("Bermudy", LocalDate.now());
+
+        trojkat.setAuthor(author);
+        bermudy.setAuthor(author);
+        author.setMovie(Set.of(trojkat, bermudy));
+
+        authorDao.save(author);
+        movieDao.save(trojkat);
+        movieDao.save(bermudy);
+
 
 
         sessionFactory.close();
+    }
+
+    private static void oneToOneExample(MovieDao movieDao, BadgeDao badgeDao) {
+        Movie movie = new Movie("Kormoran", LocalDate.of(1992, 10, 8));
+        Badge badge = new Badge("Badger badge", 3);
+
+//        właściciel relacji MUSI MIEĆ SETTER
+        movie.setBadge(badge);
+        badge.setMovie(movie);
+
+        badgeDao.save(badge);
+        movieDao.save(movie);
     }
 
     private static void deleteExample(OldAuthorDao oldAuthorDao) {
