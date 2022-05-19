@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@ToString(exclude = "actors")
 @NoArgsConstructor
 public class Movie {
     @Id
@@ -24,6 +25,7 @@ public class Movie {
     private Badge badge;
     @ManyToOne
     private Author author;
+    // jeżeli ustawimy @ManyToMany(cascade = cascade.PERSIST) to przy zapisywaniu zapisze także te powiązane
     @ManyToMany
     private Set<Actor> actors;
     public Movie(String title, LocalDate releaseDate) {

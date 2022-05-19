@@ -13,6 +13,7 @@ import org.example.model.Movie;
 import org.hibernate.SessionFactory;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -61,6 +62,15 @@ public class App {
         //Testujemy zapytanie HQL
         badgeDao.getAllBadges().forEach(System.out::println);
 
+        actorDao.getByName("Zenek").forEach(System.out::println);
+
+        actorDao.updateAllSimilarNames("Jurek", "Marcin");
+        actorDao.getByName("Marcin").forEach(System.out::println);
+
+        // Nie działa :(
+//        actorDao.updateNameById(List.of(1, 3, 5, 7, 9), "Sebuś");
+//        actorDao.getByName("Sebuś").forEach(System.out::println);
+
         sessionFactory.close();
     }
 
@@ -70,7 +80,7 @@ public class App {
         jurek.setYearsOfExperience(4);
 
         Actor zenek = new Actor();
-        zenek.setName("Jurek");
+        zenek.setName("Zenek");
         zenek.setYearsOfExperience(4);
 
         Movie jurekIZenek = new Movie("Jurek i Zenek", LocalDate.now());
