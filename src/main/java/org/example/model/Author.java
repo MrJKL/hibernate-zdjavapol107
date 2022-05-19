@@ -23,6 +23,7 @@ public class Author {
     private String address;
     @OneToMany(mappedBy = "author")
     private Set<Movie> movie;
+    // lepiej używać z Hibernate Setów niż List, bo obie są i tak zamieniane przez Hibernate na jego jakieś wewnętrzne typy i Set jest po prostu wydajniejszy
 
     public Author(String firstName, String lastName, String address) {
         this.firstName = firstName;

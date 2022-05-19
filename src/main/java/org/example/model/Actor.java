@@ -2,9 +2,7 @@ package org.example.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -14,9 +12,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class Actor {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String yearsOfExperience;
-    @ManyToMany
+    private Integer yearsOfExperience;
+    @ManyToMany(mappedBy = "actors")
     private Set<Movie> movies;
+
 }

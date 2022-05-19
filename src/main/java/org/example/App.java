@@ -1,10 +1,12 @@
 package org.example;
 
+import org.example.dao.ActorDao;
 import org.example.dao.AuthorDao;
 import org.example.dao.BadgeDao;
 import org.example.dao.MovieDao;
 import org.example.dao.old.OldAuthorDao;
 import org.example.dao.old.OldMovieDao;
+import org.example.model.Actor;
 import org.example.model.Author;
 import org.example.model.Badge;
 import org.example.model.Movie;
@@ -49,9 +51,41 @@ public class App {
         MovieDao movieDao = new MovieDao(sessionFactory);
         BadgeDao badgeDao = new BadgeDao(sessionFactory);
         AuthorDao authorDao = new AuthorDao(sessionFactory);
+        ActorDao actorDao = new ActorDao(sessionFactory);
 
         oneToOneExample(movieDao, badgeDao);
+        oneToManyExample(movieDao, authorDao);
 
+        manyToManyExample(movieDao, actorDao);
+
+        sessionFactory.close();
+    }
+
+    private static void manyToManyExample(MovieDao movieDao, ActorDao actorDao) {
+        Actor jurek = new Actor();
+        jurek.setName("Jurek");
+        jurek.setYearsOfExperience(4);
+
+        Actor zenek = new Actor();
+        zenek.setName("Jurek");
+        zenek.setYearsOfExperience(4);
+
+        Movie jurekIZenek = new Movie("Jurek i Zenek", LocalDate.now());
+        Movie jurekIZenekReaktywacja = new Movie("Jurek i Zenek: Reaktywacja", LocalDate.now());
+
+
+        jurek.setMovies(Set.of(jurekIZenek, jurekIZenekReaktywacja));
+        zenek.setMovies(Set.of(jurekIZenek, jurekIZenekReaktywacja));
+        jurekIZenek.setActors(Set.of(jurek, zenek));
+        jurekIZenekReaktywacja.setActors(Set.of(jurek, zenek));
+        //zapisujemy w kolejności — najpierw podporządkowany w relacji a dopiero później WŁAŚCICIEL relacji
+        actorDao.save(jurek);
+        actorDao.save(zenek);
+        movieDao.save(jurekIZenek);
+        movieDao.save(jurekIZenekReaktywacja);
+    }
+
+    private static void oneToManyExample(MovieDao movieDao, AuthorDao authorDao) {
         Author author = new Author("Franek", "Franc", "Kielce");
         Movie trojkat = new Movie("Trojkot", LocalDate.now());
         Movie bermudy = new Movie("Bermudy", LocalDate.now());
@@ -63,10 +97,6 @@ public class App {
         authorDao.save(author);
         movieDao.save(trojkat);
         movieDao.save(bermudy);
-
-
-
-        sessionFactory.close();
     }
 
     private static void oneToOneExample(MovieDao movieDao, BadgeDao badgeDao) {
