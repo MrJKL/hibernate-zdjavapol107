@@ -14,7 +14,7 @@ public abstract class EntityDao<T> {
 //    ta klasa powinna implementować podstawowe działania na encjach, a bardziej wymagające specyficzne rzeczy będą obsługiwane przez specyficzne dla danego entity DAO np.: MovieDao
 
 
-    private SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
     //    poniższa zmienna przechowuje typ zmiennej, jaki przyjmie metoda
     private Class<T> clazz;  // piszemy clazz, ponieważ class jest zarezerwowane przez java
 

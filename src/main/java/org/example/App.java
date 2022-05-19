@@ -58,6 +58,9 @@ public class App {
 
         manyToManyExample(movieDao, actorDao);
 
+        //Testujemy zapytanie HQL
+        badgeDao.getAllBadges().forEach(System.out::println);
+
         sessionFactory.close();
     }
 
